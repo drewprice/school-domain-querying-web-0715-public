@@ -26,11 +26,6 @@ class Course
       course.id            = row[0]
       course.name          = row[1]
       course.department_id = row[2]
-      begin
-        course.department = Department.find_by_id(course.department_id)
-      rescue
-        next
-      end
     end
   end
 
@@ -71,7 +66,6 @@ class Course
   end
 
   attr_accessor :id, :name, :department_id
-  attr_reader :department
 
   def insert
     sql = <<-SQL
@@ -105,10 +99,30 @@ class Course
     end
   end
 
+  def department
+    Department.find_by_id(department_id)
+  end
+
   def department=(department)
     @department = department
     @department_id = department.id
     department.courses << self
+  end
+
+  def add_student(student)
+    student.add_course(self)
+    save
+  end
+
+  def students
+    sql = <<-SQL
+            SELECT student_id
+            FROM registrations
+            WHERE course_id = ?;
+          SQL
+
+    results = DB[:conn].execute(sql, id).flatten
+    results.map { |id| Student.find_by_id(id) }
   end
 
   private

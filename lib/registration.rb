@@ -3,7 +3,7 @@ class Registration
     sql = <<-SQL
             CREATE TABLE IF NOT EXISTS registrations (
               id INTEGER PRIMARY KEY,
-              course_id INTEGER
+              course_id INTEGER,
               student_id INTEGER
             );
           SQL

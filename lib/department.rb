@@ -22,11 +22,6 @@ class Department
     new.tap do |department|
       department.id   = row[0]
       department.name = row[1]
-      begin
-        department.courses = Courses.find_all_by_department_id(department.id)
-      rescue
-        department.courses = []
-      end
     end
   end
 
@@ -54,10 +49,14 @@ class Department
     new_from_db(row) unless row.empty?
   end
 
-  attr_accessor :id, :name, :courses
+  attr_accessor :id, :name
 
-  def initialize
-    @courses = []
+  def courses=(courses)
+    courses.each { |c| add_course(c) }
+  end
+
+  def courses
+    Course.find_all_by_department_id(id)
   end
 
   def insert
@@ -94,8 +93,6 @@ class Department
   def add_course(course)
     course.department_id = id
     course.save
-
-    courses << course
     save
   end
 
