@@ -11,7 +11,7 @@ describe Course do
   end
 
 
-  describe 'attributes' do 
+  describe 'attributes' do
     it 'has an id, name, and department_id' do
       attributes = {
         :id => 1,
@@ -87,7 +87,7 @@ describe Course do
     it 'returns an instance of Course that matches the name from the DB' do
       dot_net = Course.new
       dot_net.name = "Advanced .NET Programming"
-      
+
       dot_net.insert
 
       dot_net_from_db = Course.find_by_name("Advanced .NET Programming")
@@ -101,7 +101,7 @@ describe Course do
       dot_net = Course.new
       dot_net.name = "Advanced .NET Programming"
       dot_net.department_id = 9999
-      
+
       dot_net.insert
 
       dot_net_from_db = Course.find_all_by_department_id(9999)[0]
@@ -149,7 +149,7 @@ describe Course do
 
       dot_net.name = "Underwater Basket Weaving"
       expect(dot_net).to receive(:update)
-      dot_net.save      
+      dot_net.save
     end
   end
 end
